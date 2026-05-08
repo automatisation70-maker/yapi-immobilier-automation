@@ -7,729 +7,322 @@
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     :root {
-      --green: #1D9E75;
-      --green-dark: #146d52;
-      --green-light: #e8f7f2;
-      --cream: #faf9f6;
-      --charcoal: #1a1a1a;
-      --gray: #6b6b6b;
-      --gray-light: #e8e8e4;
-      --white: #ffffff;
+      --green: #1D9E75; --green-dark: #146d52; --green-light: #e8f7f2;
+      --cream: #faf9f6; --charcoal: #1a1a1a; --gray: #6b6b6b; --gray-light: #e8e8e4; --white: #ffffff;
     }
+    body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--charcoal); min-height: 100vh; display: flex; flex-direction: column; }
+    header { background: var(--white); border-bottom: 1px solid var(--gray-light); padding: 0 40px; height: 72px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+    .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .logo-mark { width: 36px; height: 36px; background: var(--green); border-radius: 8px; display: flex; align-items: center; justify-content: center; }
+    .logo-mark svg { width: 20px; height: 20px; fill: white; }
+    .logo-text { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 600; color: var(--charcoal); }
+    .logo-sub { font-size: 11px; color: var(--gray); letter-spacing: 1.5px; text-transform: uppercase; font-weight: 300; }
+    .header-badge { font-size: 12px; color: var(--green); background: var(--green-light); padding: 6px 14px; border-radius: 20px; font-weight: 500; }
+    .hero { background: var(--charcoal); padding: 60px 40px; text-align: center; position: relative; overflow: hidden; }
+    .hero::before { content: ''; position: absolute; top: -80px; right: -80px; width: 400px; height: 400px; background: radial-gradient(circle, rgba(29,158,117,0.15) 0%, transparent 70%); pointer-events: none; }
+    .hero-eyebrow { font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--green); font-weight: 500; margin-bottom: 16px; }
+    .hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(28px, 4vw, 44px); color: var(--white); line-height: 1.15; font-weight: 400; max-width: 600px; margin: 0 auto 16px; }
+    .hero h1 em { color: var(--green); font-style: italic; }
+    .hero p { color: rgba(255,255,255,0.55); font-size: 15px; font-weight: 300; max-width: 440px; margin: 0 auto; line-height: 1.7; }
+    .stats { background: var(--white); border-bottom: 1px solid var(--gray-light); padding: 20px 40px; display: flex; justify-content: center; gap: 60px; }
+    .stat { text-align: center; }
+    .stat-number { font-family: 'Playfair Display', serif; font-size: 26px; color: var(--green); font-weight: 600; }
+    .stat-label { font-size: 11px; color: var(--gray); text-transform: uppercase; letter-spacing: 1px; margin-top: 4px; font-weight: 300; }
+    main { flex: 1; padding: 48px 20px; display: flex; justify-content: center; }
+    .form-card { background: var(--white); border: 1px solid var(--gray-light); border-radius: 16px; padding: 40px 48px; width: 100%; max-width: 620px; box-shadow: 0 4px 40px rgba(0,0,0,0.06); animation: fadeUp 0.5s ease both; }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
-    body {
-      font-family: 'DM Sans', sans-serif;
-      background: var(--cream);
-      color: var(--charcoal);
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
+    /* TOGGLE */
+    .client-toggle { display: flex; background: var(--cream); border: 1.5px solid var(--gray-light); border-radius: 10px; padding: 4px; margin-bottom: 28px; gap: 4px; }
+    .toggle-btn { flex: 1; padding: 10px 16px; border: none; background: transparent; border-radius: 7px; font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500; color: var(--gray); cursor: pointer; transition: all 0.2s; display: flex; align-items: center; justify-content: center; gap: 7px; }
+    .toggle-btn svg { width: 15px; height: 15px; flex-shrink: 0; }
+    .toggle-btn.active { background: var(--white); box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+    .toggle-btn.active.new-btn { color: var(--green); }
+    .toggle-btn.active.returning-btn { color: #e65100; }
+
+    .form-title { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 600; margin-bottom: 6px; }
+    .form-subtitle { font-size: 13px; color: var(--gray); margin-bottom: 24px; font-weight: 300; }
+    .progress-bar { height: 3px; background: var(--gray-light); border-radius: 2px; margin-bottom: 28px; overflow: hidden; }
+    .progress-fill { height: 100%; background: var(--green); border-radius: 2px; width: 0%; transition: width 0.4s ease; }
+
+    .returning-note { background: #fff8f0; border: 1.5px solid #ffe0b2; border-radius: 10px; padding: 14px 16px; margin-bottom: 20px; font-size: 13px; color: #bf360c; line-height: 1.6; display: none; }
+    .returning-note strong { display: block; margin-bottom: 4px; font-weight: 500; }
+
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+    .form-group { margin-bottom: 16px; }
+    label { display: block; font-size: 11px; font-weight: 500; color: var(--charcoal); letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 7px; }
+    label .req { color: var(--green); margin-left: 2px; }
+    input[type="text"], input[type="email"], input[type="tel"], input[type="number"], textarea {
+      width: 100%; padding: 11px 14px; border: 1.5px solid var(--gray-light); border-radius: 8px;
+      font-family: 'DM Sans', sans-serif; font-size: 14px; color: var(--charcoal); background: var(--white);
+      transition: border-color 0.2s, box-shadow 0.2s; outline: none;
     }
-
-    /* HEADER */
-    header {
-      background: var(--white);
-      border-bottom: 1px solid var(--gray-light);
-      padding: 0 40px;
-      height: 72px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      position: sticky;
-      top: 0;
-      z-index: 100;
-    }
-
-    .logo {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      text-decoration: none;
-    }
-
-    .logo-mark {
-      width: 36px;
-      height: 36px;
-      background: var(--green);
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .logo-mark svg {
-      width: 20px;
-      height: 20px;
-      fill: white;
-    }
-
-    .logo-text {
-      font-family: 'Playfair Display', serif;
-      font-size: 20px;
-      font-weight: 600;
-      color: var(--charcoal);
-      letter-spacing: -0.3px;
-    }
-
-    .logo-sub {
-      font-size: 11px;
-      color: var(--gray);
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      font-weight: 300;
-    }
-
-    .header-badge {
-      font-size: 12px;
-      color: var(--green);
-      background: var(--green-light);
-      padding: 6px 14px;
-      border-radius: 20px;
-      font-weight: 500;
-    }
-
-    /* HERO */
-    .hero {
-      background: var(--charcoal);
-      padding: 80px 40px;
-      text-align: center;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .hero::before {
-      content: '';
-      position: absolute;
-      top: -80px;
-      right: -80px;
-      width: 400px;
-      height: 400px;
-      background: radial-gradient(circle, rgba(29,158,117,0.15) 0%, transparent 70%);
-      pointer-events: none;
-    }
-
-    .hero::after {
-      content: '';
-      position: absolute;
-      bottom: -60px;
-      left: -60px;
-      width: 300px;
-      height: 300px;
-      background: radial-gradient(circle, rgba(29,158,117,0.1) 0%, transparent 70%);
-      pointer-events: none;
-    }
-
-    .hero-eyebrow {
-      font-size: 11px;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      color: var(--green);
-      font-weight: 500;
-      margin-bottom: 20px;
-    }
-
-    .hero h1 {
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(32px, 5vw, 52px);
-      color: var(--white);
-      line-height: 1.15;
-      font-weight: 400;
-      max-width: 640px;
-      margin: 0 auto 20px;
-    }
-
-    .hero h1 em {
-      color: var(--green);
-      font-style: italic;
-    }
-
-    .hero p {
-      color: rgba(255,255,255,0.55);
-      font-size: 16px;
-      font-weight: 300;
-      max-width: 480px;
-      margin: 0 auto;
-      line-height: 1.7;
-    }
-
-    /* STATS */
-    .stats {
-      background: var(--white);
-      border-bottom: 1px solid var(--gray-light);
-      padding: 24px 40px;
-      display: flex;
-      justify-content: center;
-      gap: 60px;
-    }
-
-    .stat {
-      text-align: center;
-    }
-
-    .stat-number {
-      font-family: 'Playfair Display', serif;
-      font-size: 28px;
-      color: var(--green);
-      font-weight: 600;
-      line-height: 1;
-    }
-
-    .stat-label {
-      font-size: 11px;
-      color: var(--gray);
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      margin-top: 4px;
-      font-weight: 300;
-    }
-
-    /* MAIN */
-    main {
-      flex: 1;
-      padding: 60px 20px;
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;
-    }
-
-    .form-card {
-      background: var(--white);
-      border: 1px solid var(--gray-light);
-      border-radius: 16px;
-      padding: 48px;
-      width: 100%;
-      max-width: 600px;
-      box-shadow: 0 4px 40px rgba(0,0,0,0.06);
-      animation: fadeUp 0.5s ease both;
-    }
-
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .form-title {
-      font-family: 'Playfair Display', serif;
-      font-size: 24px;
-      font-weight: 600;
-      margin-bottom: 6px;
-    }
-
-    .form-subtitle {
-      font-size: 14px;
-      color: var(--gray);
-      margin-bottom: 36px;
-      font-weight: 300;
-    }
-
-    /* PROGRESS */
-    .progress-bar {
-      height: 3px;
-      background: var(--gray-light);
-      border-radius: 2px;
-      margin-bottom: 36px;
-      overflow: hidden;
-    }
-
-    .progress-fill {
-      height: 100%;
-      background: var(--green);
-      border-radius: 2px;
-      width: 0%;
-      transition: width 0.4s ease;
-    }
-
-    /* FORM ELEMENTS */
-    .form-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 16px;
-      margin-bottom: 20px;
-    }
-
-    .form-group {
-      margin-bottom: 20px;
-    }
-
-    .form-group.full { grid-column: 1 / -1; }
-
-    label {
-      display: block;
-      font-size: 12px;
-      font-weight: 500;
-      color: var(--charcoal);
-      letter-spacing: 0.5px;
-      text-transform: uppercase;
-      margin-bottom: 8px;
-    }
-
-    label .required {
-      color: var(--green);
-      margin-left: 2px;
-    }
-
-    input[type="text"],
-    input[type="email"],
-    input[type="tel"],
-    input[type="number"],
-    select,
-    textarea {
-      width: 100%;
-      padding: 12px 16px;
-      border: 1.5px solid var(--gray-light);
-      border-radius: 8px;
-      font-family: 'DM Sans', sans-serif;
-      font-size: 15px;
-      color: var(--charcoal);
-      background: var(--white);
-      transition: border-color 0.2s, box-shadow 0.2s;
-      outline: none;
-      appearance: none;
-    }
-
-    input:focus, select:focus, textarea:focus {
-      border-color: var(--green);
-      box-shadow: 0 0 0 3px rgba(29,158,117,0.1);
-    }
-
-    input::placeholder, textarea::placeholder {
-      color: #bbb;
-      font-weight: 300;
-    }
-
-    select {
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236b6b6b' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
-      background-repeat: no-repeat;
-      background-position: right 14px center;
-      padding-right: 40px;
-      cursor: pointer;
-    }
-
-    textarea {
-      resize: vertical;
-      min-height: 100px;
-      line-height: 1.6;
-    }
-
-    /* RADIO PILLS */
-    .pills {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-    }
-
+    input:focus, textarea:focus { border-color: var(--green); box-shadow: 0 0 0 3px rgba(29,158,117,0.1); }
+    input::placeholder, textarea::placeholder { color: #bbb; font-weight: 300; }
+    textarea { resize: vertical; min-height: 110px; line-height: 1.6; }
+    .pills { display: flex; flex-wrap: wrap; gap: 8px; }
     .pill input { display: none; }
-
-    .pill label {
-      display: inline-block;
-      padding: 8px 18px;
-      border: 1.5px solid var(--gray-light);
-      border-radius: 30px;
-      font-size: 13px;
-      font-weight: 400;
-      text-transform: none;
-      letter-spacing: 0;
-      cursor: pointer;
-      transition: all 0.2s;
-      color: var(--gray);
-      margin-bottom: 0;
-    }
-
-    .pill input:checked + label {
-      border-color: var(--green);
-      background: var(--green-light);
-      color: var(--green-dark);
-      font-weight: 500;
-    }
-
-    .pill label:hover {
-      border-color: var(--green);
-      color: var(--green);
-    }
-
-    /* DIVIDER */
-    .divider {
-      height: 1px;
-      background: var(--gray-light);
-      margin: 28px 0;
-    }
-
-    .section-label {
-      font-size: 11px;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      color: var(--gray);
-      font-weight: 500;
-      margin-bottom: 20px;
-    }
-
-    /* SUBMIT */
-    .submit-btn {
-      width: 100%;
-      padding: 16px;
-      background: var(--green);
-      color: white;
-      border: none;
-      border-radius: 10px;
-      font-family: 'DM Sans', sans-serif;
-      font-size: 15px;
-      font-weight: 500;
-      cursor: pointer;
-      transition: background 0.2s, transform 0.1s;
-      margin-top: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-    }
-
+    .pill label { display: inline-block; padding: 7px 16px; border: 1.5px solid var(--gray-light); border-radius: 30px; font-size: 12px; font-weight: 400; text-transform: none; letter-spacing: 0; cursor: pointer; transition: all 0.2s; color: var(--gray); margin-bottom: 0; }
+    .pill input:checked + label { border-color: var(--green); background: var(--green-light); color: var(--green-dark); font-weight: 500; }
+    .pill label:hover { border-color: var(--green); color: var(--green); }
+    .divider { height: 1px; background: var(--gray-light); margin: 20px 0; }
+    .section-label { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--gray); font-weight: 500; margin-bottom: 14px; }
+    .submit-btn { width: 100%; padding: 14px; background: var(--green); color: white; border: none; border-radius: 10px; font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 500; cursor: pointer; transition: background 0.2s; margin-top: 8px; display: flex; align-items: center; justify-content: center; gap: 8px; }
     .submit-btn:hover { background: var(--green-dark); }
-    .submit-btn:active { transform: scale(0.99); }
     .submit-btn:disabled { background: #aaa; cursor: not-allowed; }
-
-    .submit-note {
-      text-align: center;
-      font-size: 12px;
-      color: var(--gray);
-      margin-top: 12px;
-      font-weight: 300;
-    }
-
-    /* SUCCESS */
-    .success-state {
-      display: none;
-      text-align: center;
-      padding: 20px 0;
-      animation: fadeUp 0.4s ease both;
-    }
-
-    .success-icon {
-      width: 64px;
-      height: 64px;
-      background: var(--green-light);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0 auto 24px;
-    }
-
-    .success-icon svg {
-      width: 28px;
-      height: 28px;
-      stroke: var(--green);
-      fill: none;
-      stroke-width: 2.5;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-    }
-
-    .success-title {
-      font-family: 'Playfair Display', serif;
-      font-size: 26px;
-      margin-bottom: 12px;
-    }
-
-    .success-text {
-      color: var(--gray);
-      font-size: 15px;
-      line-height: 1.7;
-      font-weight: 300;
-      max-width: 380px;
-      margin: 0 auto;
-    }
-
-    /* ERROR */
-    .error-msg {
-      font-size: 12px;
-      color: #e53e3e;
-      margin-top: 6px;
-      display: none;
-    }
-
-    input.error, select.error, textarea.error {
-      border-color: #e53e3e;
-    }
-
-    /* FOOTER */
-    footer {
-      background: var(--white);
-      border-top: 1px solid var(--gray-light);
-      padding: 24px 40px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .footer-brand {
-      font-family: 'Playfair Display', serif;
-      font-size: 14px;
-      color: var(--charcoal);
-    }
-
-    .footer-info {
-      font-size: 12px;
-      color: var(--gray);
-      font-weight: 300;
-    }
-
+    .submit-note { text-align: center; font-size: 11px; color: var(--gray); margin-top: 10px; font-weight: 300; }
+    .error-msg { font-size: 11px; color: #e53e3e; margin-top: 5px; display: none; }
+    input.error, textarea.error { border-color: #e53e3e; }
+    .success-state { display: none; text-align: center; padding: 20px 0; }
+    .success-icon { width: 64px; height: 64px; background: var(--green-light); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; }
+    .success-icon svg { width: 28px; height: 28px; stroke: var(--green); fill: none; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
+    .success-title { font-family: 'Playfair Display', serif; font-size: 24px; margin-bottom: 10px; }
+    .success-text { color: var(--gray); font-size: 14px; line-height: 1.7; font-weight: 300; max-width: 360px; margin: 0 auto; }
+    footer { background: var(--white); border-top: 1px solid var(--gray-light); padding: 20px 40px; display: flex; align-items: center; justify-content: space-between; }
+    .footer-brand { font-family: 'Playfair Display', serif; font-size: 14px; }
+    .footer-info { font-size: 12px; color: var(--gray); font-weight: 300; }
     @media (max-width: 600px) {
-      header { padding: 0 20px; }
-      .hero { padding: 50px 20px; }
-      .stats { gap: 30px; padding: 20px; flex-wrap: wrap; }
-      .form-card { padding: 28px 20px; }
+      header, footer { padding: 0 20px; }
+      .hero { padding: 40px 20px; }
+      .stats { gap: 24px; padding: 16px; flex-wrap: wrap; }
+      .form-card { padding: 24px 18px; }
       .form-row { grid-template-columns: 1fr; }
-      footer { flex-direction: column; gap: 8px; text-align: center; }
+      footer { flex-direction: column; gap: 8px; text-align: center; padding: 16px 20px; }
     }
   </style>
 </head>
 <body>
 
-  <!-- HEADER -->
-  <header>
-    <a class="logo" href="#">
-      <div class="logo-mark">
-        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-          <path d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H4a1 1 0 01-1-1V9.5z"/>
-          <path d="M9 21V12h6v9" fill="rgba(255,255,255,0.3)"/>
-        </svg>
+<header>
+  <a class="logo" href="#">
+    <div class="logo-mark">
+      <svg viewBox="0 0 24 24"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H4a1 1 0 01-1-1V9.5z"/><path d="M9 21V12h6v9" fill="rgba(255,255,255,0.3)"/></svg>
+    </div>
+    <div>
+      <div class="logo-text">Yapi Immobilier</div>
+      <div class="logo-sub">Paris & Île-de-France</div>
+    </div>
+  </a>
+  <div class="header-badge">Réponse sous 24h</div>
+</header>
+
+<div class="hero">
+  <div class="hero-eyebrow">Votre projet commence ici</div>
+  <h1>Trouvons ensemble votre <em>bien idéal</em></h1>
+  <p>Décrivez votre projet en 2 minutes. Un agent vous contacte personnellement sous 24h.</p>
+</div>
+
+<div class="stats">
+  <div class="stat"><div class="stat-number">150+</div><div class="stat-label">Biens disponibles</div></div>
+  <div class="stat"><div class="stat-number">24h</div><div class="stat-label">Délai de réponse</div></div>
+  <div class="stat"><div class="stat-number">98%</div><div class="stat-label">Clients satisfaits</div></div>
+</div>
+
+<main>
+  <div class="form-card">
+    <div id="formContent">
+
+      <div class="client-toggle">
+        <button type="button" class="toggle-btn active new-btn" id="btnNew" onclick="setMode('new')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M20 21a8 8 0 10-16 0"/><line x1="12" y1="15" x2="12" y2="21"/><line x1="9" y1="18" x2="15" y2="18"/></svg>
+          Nouveau contact
+        </button>
+        <button type="button" class="toggle-btn returning-btn" id="btnReturning" onclick="setMode('returning')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M20 21a8 8 0 10-16 0"/></svg>
+          Déjà client
+        </button>
       </div>
-      <div>
-        <div class="logo-text">Yapi Immobilier</div>
-        <div class="logo-sub">Paris & Île-de-France</div>
+
+      <div class="form-title" id="formTitle">Parlez-nous de votre projet</div>
+      <div class="form-subtitle" id="formSubtitle">Tous les champs marqués d'un * sont obligatoires</div>
+
+      <div class="returning-note" id="returningNote">
+        <strong>👋 Vous êtes déjà dans notre base</strong>
+        Renseignez votre email et décrivez dans le message ce qui a changé — budget, localisation, téléphone, nouveau projet... Notre équipe mettra à jour votre dossier sous 24h.
       </div>
-    </a>
-    <div class="header-badge">Réponse sous 24h</div>
-  </header>
 
-  <!-- HERO -->
-  <div class="hero">
-    <div class="hero-eyebrow">Votre projet commence ici</div>
-    <h1>Trouvons ensemble votre <em>bien idéal</em></h1>
-    <p>Décrivez votre projet en 2 minutes. Un de nos agents vous contacte personnellement sous 24h.</p>
-  </div>
+      <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
 
-  <!-- STATS -->
-  <div class="stats">
-    <div class="stat">
-      <div class="stat-number">150+</div>
-      <div class="stat-label">Biens disponibles</div>
-    </div>
-    <div class="stat">
-      <div class="stat-number">24h</div>
-      <div class="stat-label">Délai de réponse</div>
-    </div>
-    <div class="stat">
-      <div class="stat-number">98%</div>
-      <div class="stat-label">Clients satisfaits</div>
-    </div>
-  </div>
+      <form id="yapiform" novalidate>
+        <input type="hidden" name="client_type" id="client_type" value="nouveau">
 
-  <!-- MAIN -->
-  <main>
-    <div class="form-card">
-      <div id="formContent">
-        <div class="form-title">Parlez-nous de votre projet</div>
-        <div class="form-subtitle">Tous les champs marqués d'un * sont obligatoires</div>
-        <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+        <div class="section-label">Vos coordonnées</div>
 
-        <form id="yapiform" novalidate>
-
-          <!-- IDENTITÉ -->
-          <div class="section-label">Vos coordonnées</div>
-          <div class="form-row">
-            <div class="form-group">
-              <label>Prénom <span class="required">*</span></label>
-              <input type="text" name="prenom" placeholder="Marie" required>
-              <div class="error-msg">Champ requis</div>
-            </div>
-            <div class="form-group">
-              <label>Nom <span class="required">*</span></label>
-              <input type="text" name="nom" placeholder="Dupont" required>
-              <div class="error-msg">Champ requis</div>
-            </div>
-          </div>
-
-          <div class="form-row">
-            <div class="form-group">
-              <label>Email <span class="required">*</span></label>
-              <input type="email" name="email" placeholder="marie@email.com" required>
-              <div class="error-msg">Email invalide</div>
-            </div>
-            <div class="form-group">
-              <label>Téléphone <span class="required">*</span></label>
-              <input type="tel" name="telephone" placeholder="06 12 34 56 78" required>
-              <div class="error-msg">Champ requis</div>
-            </div>
-          </div>
-
-          <div class="divider"></div>
-
-          <!-- PROJET -->
-          <div class="section-label">Votre projet</div>
-
+        <div id="rowNomPrenom" class="form-row">
           <div class="form-group">
-            <label>Type de projet <span class="required">*</span></label>
+            <label>Prénom <span class="req">*</span></label>
+            <input type="text" name="prenom" id="prenom" placeholder="Marie">
+            <div class="error-msg">Champ requis</div>
+          </div>
+          <div class="form-group">
+            <label>Nom <span class="req">*</span></label>
+            <input type="text" name="nom" id="nom" placeholder="Dupont">
+            <div class="error-msg">Champ requis</div>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Email <span class="req">*</span></label>
+            <input type="email" name="email" id="email" placeholder="marie@email.com" required>
+            <div class="error-msg">Email invalide</div>
+          </div>
+          <div class="form-group" id="groupTel">
+            <label>Téléphone <span class="req" id="reqTel">*</span></label>
+            <input type="tel" name="telephone" id="telephone" placeholder="06 12 34 56 78">
+            <div class="error-msg">Champ requis</div>
+          </div>
+        </div>
+
+        <div id="sectionProjet">
+          <div class="divider"></div>
+          <div class="section-label">Votre projet</div>
+          <div class="form-group">
+            <label>Type de projet <span class="req">*</span></label>
             <div class="pills">
-              <div class="pill"><input type="radio" name="projet" id="p_location" value="location" required><label for="p_location">Location</label></div>
-              <div class="pill"><input type="radio" name="projet" id="p_achat" value="achat"><label for="p_achat">Achat</label></div>
-              <div class="pill"><input type="radio" name="projet" id="p_vente" value="vente"><label for="p_vente">Vente</label></div>
-              <div class="pill"><input type="radio" name="projet" id="p_estimation" value="estimation"><label for="p_estimation">Estimation</label></div>
+              <div class="pill"><input type="radio" name="projet" id="p_loc" value="location"><label for="p_loc">Location</label></div>
+              <div class="pill"><input type="radio" name="projet" id="p_ach" value="achat"><label for="p_ach">Achat</label></div>
+              <div class="pill"><input type="radio" name="projet" id="p_ven" value="vente"><label for="p_ven">Vente</label></div>
+              <div class="pill"><input type="radio" name="projet" id="p_est" value="estimation"><label for="p_est">Estimation</label></div>
             </div>
             <div class="error-msg" id="projetError">Veuillez sélectionner un type de projet</div>
           </div>
-
           <div class="form-group">
-            <label>Type de bien <span class="required">*</span></label>
+            <label>Type de bien <span class="req">*</span></label>
             <div class="pills">
-              <div class="pill"><input type="radio" name="type_bien" id="tb_appart" value="appartement" required><label for="tb_appart">Appartement</label></div>
-              <div class="pill"><input type="radio" name="type_bien" id="tb_maison" value="maison"><label for="tb_maison">Maison</label></div>
-              <div class="pill"><input type="radio" name="type_bien" id="tb_terrain" value="terrain"><label for="tb_terrain">Terrain</label></div>
-              <div class="pill"><input type="radio" name="type_bien" id="tb_autre" value="autre"><label for="tb_autre">Autre</label></div>
+              <div class="pill"><input type="radio" name="type_bien" id="tb_app" value="appartement"><label for="tb_app">Appartement</label></div>
+              <div class="pill"><input type="radio" name="type_bien" id="tb_mai" value="maison"><label for="tb_mai">Maison</label></div>
+              <div class="pill"><input type="radio" name="type_bien" id="tb_ter" value="terrain"><label for="tb_ter">Terrain</label></div>
+              <div class="pill"><input type="radio" name="type_bien" id="tb_aut" value="autre"><label for="tb_aut">Autre</label></div>
             </div>
             <div class="error-msg" id="typeBienError">Veuillez sélectionner un type de bien</div>
           </div>
-
           <div class="form-row">
             <div class="form-group">
-              <label>Localisation souhaitée <span class="required">*</span></label>
-              <input type="text" name="localisation" placeholder="Paris 15e, Bordeaux..." required>
+              <label>Localisation souhaitée <span class="req">*</span></label>
+              <input type="text" name="localisation" id="localisation" placeholder="Paris 15e, Bordeaux...">
               <div class="error-msg">Champ requis</div>
             </div>
             <div class="form-group">
-              <label>Budget maximum (€) <span class="required">*</span></label>
-              <input type="number" name="budget_max" placeholder="1500" min="0" required>
+              <label>Budget maximum (€) <span class="req">*</span></label>
+              <input type="number" name="budget_max" id="budget_max" placeholder="1500" min="0">
               <div class="error-msg">Champ requis</div>
             </div>
           </div>
-
-          <div class="divider"></div>
-
-          <!-- MESSAGE -->
-          <div class="section-label">Précisions (optionnel)</div>
-          <div class="form-group">
-            <label>Votre message</label>
-            <textarea name="message" placeholder="Nombre de pièces souhaité, délai, contraintes particulières..."></textarea>
-          </div>
-
-          <button type="submit" class="submit-btn" id="submitBtn">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-            Envoyer ma demande
-          </button>
-          <div class="submit-note">🔒 Vos données sont confidentielles et ne seront jamais revendues</div>
-
-        </form>
-      </div>
-
-      <!-- SUCCESS -->
-      <div class="success-state" id="successState">
-        <div class="success-icon">
-          <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
         </div>
-        <div class="success-title">Demande envoyée !</div>
-        <p class="success-text">Merci <strong id="successName"></strong>. Un de nos agents va analyser votre dossier et vous contacter personnellement sous <strong>24h</strong> au numéro indiqué.</p>
-      </div>
 
+        <div class="divider"></div>
+        <div class="section-label" id="msgSectionLabel">Précisions (optionnel)</div>
+        <div class="form-group">
+          <label id="msgLabel">Votre message</label>
+          <textarea name="message" id="message" placeholder="Nombre de pièces souhaité, délai, contraintes particulières..."></textarea>
+          <div class="error-msg" id="messageError">Ce champ est obligatoire pour une mise à jour</div>
+        </div>
+
+        <button type="submit" class="submit-btn" id="submitBtn">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+          Envoyer ma demande
+        </button>
+        <div class="submit-note">🔒 Vos données sont confidentielles et ne seront jamais revendues</div>
+      </form>
     </div>
-  </main>
 
-  <!-- FOOTER -->
-  <footer>
-    <div class="footer-brand">Yapi Immobilier</div>
-    <div class="footer-info">📞 01 23 45 67 89 &nbsp;·&nbsp; 📍 Paris, France &nbsp;·&nbsp; www.yapi-immobilier.fr</div>
-  </footer>
+    <div class="success-state" id="successState">
+      <div class="success-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+      <div class="success-title">Demande envoyée !</div>
+      <p class="success-text">Merci <strong id="successName"></strong>. Un de nos agents va analyser votre dossier et vous contacter personnellement sous <strong>24h</strong>.</p>
+    </div>
+  </div>
+</main>
 
-  <script>
-    const WEBHOOK_URL = 'https://n8n-allassane.duckdns.org/webhook/formulaire-yapi';
+<footer>
+  <div class="footer-brand">Yapi Immobilier</div>
+  <div class="footer-info">📞 01 23 45 67 89 &nbsp;·&nbsp; 📍 Paris, France &nbsp;·&nbsp; www.yapi-immobilier.fr</div>
+</footer>
 
-    // Progress bar
-    const fields = document.querySelectorAll('input[required], select[required]');
-    function updateProgress() {
-      let filled = 0;
-      const radios = {};
-      fields.forEach(f => {
-        if (f.type === 'radio') {
-          if (f.checked) radios[f.name] = true;
-        } else if (f.value.trim()) filled++;
+<script>
+  const WEBHOOK_URL = 'https://n8n-allassane.duckdns.org/webhook/formulaire-yapi';
+  let currentMode = 'new';
+
+  function setMode(mode) {
+    currentMode = mode;
+    document.getElementById('client_type').value = mode === 'new' ? 'nouveau' : 'existant';
+    const isNew = mode === 'new';
+
+    document.getElementById('btnNew').className = 'toggle-btn new-btn' + (isNew ? ' active' : '');
+    document.getElementById('btnReturning').className = 'toggle-btn returning-btn' + (!isNew ? ' active' : '');
+    document.getElementById('sectionProjet').style.display = isNew ? 'block' : 'none';
+    document.getElementById('rowNomPrenom').style.display = isNew ? 'grid' : 'none';
+    document.getElementById('returningNote').style.display = isNew ? 'none' : 'block';
+    document.getElementById('groupTel').style.display = isNew ? 'block' : 'none';
+    document.getElementById('formTitle').textContent = isNew ? 'Parlez-nous de votre projet' : 'Mettre à jour mon dossier';
+    document.getElementById('formSubtitle').textContent = isNew ? 'Tous les champs marqués d\'un * sont obligatoires' : 'Décrivez vos nouvelles informations dans le message';
+    document.getElementById('msgSectionLabel').textContent = isNew ? 'Précisions (optionnel)' : 'Vos nouvelles informations *';
+    document.getElementById('msgLabel').textContent = isNew ? 'Votre message' : 'Décrivez ce qui a changé';
+    document.getElementById('message').placeholder = isNew
+      ? 'Nombre de pièces souhaité, délai, contraintes particulières...'
+      : 'Ex: Mon budget a changé, je cherche maintenant 3 pièces minimum, nouveau téléphone: 06...';
+  }
+
+  document.getElementById('yapiform').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    let valid = true;
+    const isNew = currentMode === 'new';
+
+    const emailEl = document.getElementById('email');
+    if (!emailEl.value.trim() || !emailEl.value.includes('@')) {
+      emailEl.classList.add('error'); emailEl.nextElementSibling.style.display = 'block'; valid = false;
+    } else { emailEl.classList.remove('error'); emailEl.nextElementSibling.style.display = 'none'; }
+
+    if (isNew) {
+      ['prenom', 'nom', 'telephone', 'localisation', 'budget_max'].forEach(id => {
+        const el = document.getElementById(id);
+        if (!el.value.trim()) { el.classList.add('error'); el.nextElementSibling.style.display = 'block'; valid = false; }
+        else { el.classList.remove('error'); el.nextElementSibling.style.display = 'none'; }
       });
-      filled += Object.keys(radios).length;
-      const total = [...new Set([...fields].map(f => f.name))].length;
-      document.getElementById('progressFill').style.width = Math.min(100, (filled / total) * 100) + '%';
-    }
-    document.querySelectorAll('input, select, textarea').forEach(el => {
-      el.addEventListener('input', updateProgress);
-      el.addEventListener('change', updateProgress);
-    });
-
-    // Form submit
-    document.getElementById('yapiform').addEventListener('submit', async function(e) {
-      e.preventDefault();
-      let valid = true;
-
-      // Validate text/email/tel/number fields
-      this.querySelectorAll('input[required]:not([type=radio])').forEach(input => {
-        const err = input.nextElementSibling;
-        if (!input.value.trim() || (input.type === 'email' && !input.value.includes('@'))) {
-          input.classList.add('error');
-          if (err) err.style.display = 'block';
-          valid = false;
-        } else {
-          input.classList.remove('error');
-          if (err) err.style.display = 'none';
-        }
-      });
-
-      // Validate radios
       ['projet', 'type_bien'].forEach(name => {
         const checked = document.querySelector(`input[name="${name}"]:checked`);
-        const errEl = document.getElementById(name === 'projet' ? 'projetError' : 'typeBienError');
-        if (!checked) {
-          errEl.style.display = 'block';
-          valid = false;
-        } else {
-          errEl.style.display = 'none';
-        }
+        const err = document.getElementById(name === 'projet' ? 'projetError' : 'typeBienError');
+        if (!checked) { err.style.display = 'block'; valid = false; } else err.style.display = 'none';
       });
+    } else {
+      const msg = document.getElementById('message');
+      if (!msg.value.trim()) { msg.classList.add('error'); document.getElementById('messageError').style.display = 'block'; valid = false; }
+      else { msg.classList.remove('error'); document.getElementById('messageError').style.display = 'none'; }
+    }
 
-      if (!valid) return;
+    if (!valid) return;
 
-      const btn = document.getElementById('submitBtn');
-      btn.disabled = true;
-      btn.textContent = 'Envoi en cours...';
+    const btn = document.getElementById('submitBtn');
+    btn.disabled = true; btn.textContent = 'Envoi en cours...';
 
-      const data = {
-        prenom: this.prenom.value.trim(),
-        nom: this.nom.value.trim(),
-        email: this.email.value.trim(),
-        telephone: this.telephone.value.trim(),
-        projet: document.querySelector('input[name="projet"]:checked')?.value || '',
-        type_bien: document.querySelector('input[name="type_bien"]:checked')?.value || '',
-        localisation: this.localisation.value.trim(),
-        budget_max: this.budget_max.value.trim(),
-        message: this.message.value.trim(),
-        source: 'Formulaire Web',
-        date_soumission: new Date().toISOString()
-      };
+    const data = {
+      client_type: isNew ? 'nouveau' : 'existant',
+      email: emailEl.value.trim(),
+      message: document.getElementById('message').value.trim(),
+      source: 'Formulaire Web',
+      date_soumission: new Date().toISOString()
+    };
 
-      try {
-        await fetch(WEBHOOK_URL, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(data)
-        });
-      } catch(err) {
-        console.log('Webhook error (ignored in demo):', err);
-      }
+    if (isNew) {
+      data.prenom = document.getElementById('prenom').value.trim();
+      data.nom = document.getElementById('nom').value.trim();
+      data.telephone = document.getElementById('telephone').value.trim();
+      data.projet = document.querySelector('input[name="projet"]:checked')?.value || '';
+      data.type_bien = document.querySelector('input[name="type_bien"]:checked')?.value || '';
+      data.localisation = document.getElementById('localisation').value.trim();
+      data.budget_max = document.getElementById('budget_max').value.trim();
+    }
 
-      // Show success
-      document.getElementById('formContent').style.display = 'none';
-      document.getElementById('successName').textContent = data.prenom;
-      const s = document.getElementById('successState');
-      s.style.display = 'block';
-      document.getElementById('progressFill').style.width = '100%';
-    });
-  </script>
+    try {
+      await fetch(WEBHOOK_URL, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
+    } catch(err) { console.log('Webhook:', err); }
+
+    document.getElementById('formContent').style.display = 'none';
+    document.getElementById('successName').textContent = data.prenom || 'vous';
+    document.getElementById('successState').style.display = 'block';
+  });
+</script>
 </body>
 </html>
