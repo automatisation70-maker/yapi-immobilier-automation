@@ -428,14 +428,18 @@
 
   // Horaires de travail : Lun-Sam 9h-19h, créneaux 1h
   function getTimeSlots(date) {
-    const day = date.getDay(); // 0=dim, 6=sam
-    if (day === 0) return []; // Fermé le dimanche
+    const day = date.getDay();
+    if (day === 0) return []; // Fermé dimanche
     const slots = [];
-    const start = 9, end = 18;
-    for (let h = start; h < end; h++) {
-      slots.push({ time: `${h}:00`, label: `${h}h00`, end: `${h+1}:00` });
-      if (h < end - 0.5) slots.push({ time: `${h}:30`, label: `${h}h30`, end: `${h}:30` });
-    }
+    const matin = [9, 10, 11]; // 9h, 10h, 11h
+    const apresmidi = [14, 15, 16, 17]; // 14h, 15h, 16h, 17h
+    [...matin, ...apresmidi].forEach(h => {
+      slots.push({ 
+        time: `${h}:00`, 
+        label: `${h}h00`, 
+        end: `${h+1}:00` 
+      });
+    });
     return slots;
   }
 
