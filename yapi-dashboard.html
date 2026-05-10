@@ -39,8 +39,13 @@
     .logo-badge { font-size: 11px; color: var(--gray); background: var(--cream); padding: 3px 10px; border-radius: 20px; margin-left: 8px; }
     .header-right { display: flex; align-items: center; gap: 16px; }
     .refresh-info { font-size: 12px; color: var(--gray); }
-    .refresh-btn { padding: 7px 14px; background: var(--green-light); color: var(--green); border: none; border-radius: 6px; font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 500; cursor: pointer; display: flex; align-items: center; gap: 6px; }
-    .logout-btn { padding: 7px 14px; background: transparent; color: var(--gray); border: 1.5px solid var(--gray-light); border-radius: 6px; font-family: 'DM Sans', sans-serif; font-size: 12px; cursor: pointer; }
+    .refresh-btn { padding: 7px 14px; background: var(--green-light); color: var(--green); border: none; border-radius: 6px; font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 500; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: background 0.2s, transform 0.15s, box-shadow 0.2s; }
+    .refresh-btn:hover { background: var(--green); color: white; box-shadow: 0 2px 8px rgba(29,158,117,0.3); transform: translateY(-1px); }
+    .refresh-btn:active { transform: scale(0.96); }
+    .refresh-btn.spinning svg { animation: spin 0.7s linear infinite; }
+    .logout-btn { padding: 7px 14px; background: transparent; color: var(--gray); border: 1.5px solid var(--gray-light); border-radius: 6px; font-family: 'DM Sans', sans-serif; font-size: 12px; cursor: pointer; transition: all 0.2s; }
+    .logout-btn:hover { border-color: var(--red); color: var(--red); background: var(--red-light); transform: translateY(-1px); }
+    .logout-btn:active { transform: scale(0.96); }
 
     main { padding: 28px 32px; max-width: 1400px; margin: 0 auto; }
 
@@ -72,14 +77,15 @@
 
     /* LEADS TABLE */
     .leads-list { max-height: 520px; overflow-y: auto; }
-    .lead-row { padding: 14px 20px; border-bottom: 1px solid var(--gray-light); display: grid; grid-template-columns: 180px 100px 120px 90px 80px 1fr 80px; gap: 12px; align-items: center; cursor: pointer; transition: background 0.15s; font-size: 13px; }
-    .lead-row:hover { background: var(--cream); }
+    .lead-row { padding: 14px 20px; border-bottom: 1px solid var(--gray-light); display: grid; grid-template-columns: 200px 100px 120px 90px 80px 1fr 80px; gap: 12px; align-items: center; cursor: pointer; transition: background 0.15s, transform 0.15s, box-shadow 0.15s; font-size: 13px; }
+    .lead-row:hover { background: var(--green-light); transform: translateX(3px); box-shadow: -3px 0 0 var(--green); }
     .lead-row:last-child { border-bottom: none; }
     .lead-row.urgent { border-left: 3px solid var(--red); }
-    .leads-header { padding: 10px 20px; background: var(--cream); border-bottom: 1px solid var(--gray-light); display: grid; grid-template-columns: 180px 100px 120px 90px 80px 1fr 80px; gap: 12px; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: var(--gray); font-weight: 500; }
+    .leads-header { padding: 10px 20px; background: var(--cream); border-bottom: 1px solid var(--gray-light); display: grid; grid-template-columns: 200px 100px 120px 90px 80px 1fr 80px; gap: 12px; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: var(--gray); font-weight: 500; }
     .lead-name { font-weight: 500; color: var(--charcoal); }
     .lead-email { color: var(--gray); font-size: 11px; margin-top: 2px; }
-    .badge { display: inline-flex; align-items: center; padding: 3px 8px; border-radius: 20px; font-size: 11px; font-weight: 500; }
+    .badge { display: inline-flex; align-items: center; padding: 3px 8px; border-radius: 20px; font-size: 11px; font-weight: 500; transition: transform 0.15s, box-shadow 0.15s; cursor: default; }
+    .badge:hover { transform: translateY(-1px); box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
     .badge.chaud { background: #fff3e0; color: #e65100; }
     .badge.tiede { background: #e3f2fd; color: #1565c0; }
     .badge.froid { background: var(--cream); color: var(--gray); }
@@ -92,12 +98,13 @@
     .score-fill.medium { background: var(--orange); }
     .score-fill.low { background: var(--red); }
     .action-btn { padding: 5px 10px; border: 1.5px solid var(--gray-light); border-radius: 6px; font-size: 11px; cursor: pointer; background: transparent; color: var(--gray); font-family: 'DM Sans', sans-serif; transition: all 0.2s; }
-    .action-btn:hover { border-color: var(--green); color: var(--green); }
+    .action-btn:hover { border-color: var(--green); color: white; background: var(--green); transform: translateY(-1px); box-shadow: 0 2px 6px rgba(29,158,117,0.3); }
+    .action-btn:active { transform: scale(0.95); }
 
     /* RDV PANEL */
     .rdv-list { padding: 12px; max-height: 280px; overflow-y: auto; }
-    .rdv-item { padding: 12px; border: 1px solid var(--gray-light); border-radius: 8px; margin-bottom: 8px; cursor: pointer; transition: border-color 0.2s; }
-    .rdv-item:hover { border-color: var(--green); }
+    .rdv-item { padding: 12px; border: 1px solid var(--gray-light); border-radius: 8px; margin-bottom: 8px; cursor: pointer; transition: all 0.2s; }
+    .rdv-item:hover { border-color: var(--green); background: var(--green-light); transform: translateX(3px); box-shadow: -3px 0 0 var(--green); }
     .rdv-item:last-child { margin-bottom: 0; }
     .rdv-time { font-size: 11px; color: var(--green); font-weight: 500; margin-bottom: 4px; }
     .rdv-title { font-size: 13px; font-weight: 500; margin-bottom: 2px; }
@@ -325,6 +332,8 @@
 
   // LOAD DATA
   async function loadData() {
+    const btn = document.querySelector('.refresh-btn');
+    if (btn) btn.classList.add('spinning');
     try {
       const res = await fetch(API_URL);
       const data = await res.json();
@@ -338,6 +347,8 @@
     } catch(e) {
       console.error('Erreur chargement:', e);
       document.getElementById('leads-list').innerHTML = '<div class="empty">Erreur de connexion au serveur</div>';
+    } finally {
+      if (btn) btn.classList.remove('spinning');
     }
   }
 
@@ -384,11 +395,13 @@
       const nom = `${lead['Prénom'] || ''} ${lead['Nom'] || ''}`.trim() || lead['Email'] || '—';
       const projet = lead['Type de projet'] || '—';
       const localisation = lead['Localisation'] || '—';
+      const telephone = lead['Téléphone'] || '';
 
       return `<div class="lead-row ${isUrgent ? 'urgent' : ''}" onclick="openLead('${lead['ID Lead']}')">
         <div>
           <div class="lead-name">${nom}</div>
           <div class="lead-email">${lead['Email'] || ''}</div>
+          ${telephone ? `<div style="font-size:11px;color:var(--green);margin-top:2px;">📞 ${telephone}</div>` : ''}
         </div>
         <div><span class="badge ${temp}">${temp}</span></div>
         <div style="font-size:12px;color:var(--gray);">${localisation}</div>
@@ -415,10 +428,11 @@
       return;
     }
 
-    const html = allRDV.map(rdv => {
+    const html = allRDV.map((rdv, i) => {
       const start = rdv.debut ? new Date(rdv.debut) : null;
+      const end = rdv.fin ? new Date(rdv.fin) : null;
       const timeStr = start ? start.toLocaleDateString('fr-FR', {weekday:'short', day:'numeric', month:'short'}) + ' — ' + start.toLocaleTimeString('fr-FR', {hour:'2-digit', minute:'2-digit'}) : '—';
-      return `<div class="rdv-item">
+      return `<div class="rdv-item" onclick="openRDVModal(${i})">
         <div class="rdv-time">${timeStr}</div>
         <div class="rdv-title">${rdv.titre || '—'}</div>
         <div class="rdv-detail">${rdv.lieu || ''}</div>
@@ -426,6 +440,46 @@
     }).join('');
 
     list.innerHTML = html;
+  }
+
+  function openRDVModal(index) {
+    const rdv = allRDV[index];
+    if (!rdv) return;
+    const start = rdv.debut ? new Date(rdv.debut) : null;
+    const end = rdv.fin ? new Date(rdv.fin) : null;
+    const dateStr = start ? start.toLocaleDateString('fr-FR', {weekday:'long', day:'numeric', month:'long', year:'numeric'}) : '—';
+    const heureStr = start ? start.toLocaleTimeString('fr-FR', {hour:'2-digit', minute:'2-digit'}) + (end ? ' → ' + end.toLocaleTimeString('fr-FR', {hour:'2-digit', minute:'2-digit'}) : '') : '—';
+
+    // Parse description
+    const desc = rdv.description || '';
+    const lines = desc.split('\n').filter(l => l.trim());
+
+    document.getElementById('modal-title').textContent = rdv.titre || 'Détail du RDV';
+    document.getElementById('modal-body').innerHTML = `
+      <div class="modal-section">
+        <div class="modal-section-title">Date & Heure</div>
+        <div class="info-grid">
+          <div class="info-item" style="grid-column:span 2"><div class="info-label">Date</div><div class="info-value">${dateStr}</div></div>
+          <div class="info-item"><div class="info-label">Horaire</div><div class="info-value">${heureStr}</div></div>
+          <div class="info-item"><div class="info-label">Lieu</div><div class="info-value">${rdv.lieu || '—'}</div></div>
+        </div>
+      </div>
+      ${lines.length > 0 ? `
+      <div class="modal-section">
+        <div class="modal-section-title">Informations client</div>
+        <div class="info-grid">
+          ${lines.map(l => {
+            const [key, ...val] = l.split(':');
+            return val.length ? `<div class="info-item"><div class="info-label">${key.replace(/[👤📧📞🏠📋📝]/g,'').trim()}</div><div class="info-value">${val.join(':').trim()}</div></div>` : '';
+          }).join('')}
+        </div>
+      </div>` : ''}
+    `;
+
+    // Hide save button for RDV modal
+    document.querySelector('.btn-save').style.display = 'none';
+    document.querySelector('.btn-cancel').textContent = 'Fermer';
+    document.getElementById('modal-overlay').classList.add('open');
   }
 
   // ALERTS
@@ -467,6 +521,9 @@
   function openLead(id) {
     currentLead = allLeads.find(l => l['ID Lead'] === id);
     if (!currentLead) return;
+    // Restore save button
+    document.querySelector('.btn-save').style.display = '';
+    document.querySelector('.btn-cancel').textContent = 'Annuler';
 
     const l = currentLead;
     const nom = `${l['Prénom'] || ''} ${l['Nom'] || ''}`.trim() || l['Email'];
