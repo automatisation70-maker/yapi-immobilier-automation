@@ -672,8 +672,7 @@
       await fetch(UPDATE_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
-        mode: 'no-cors'
+        body: JSON.stringify(payload)
       });
     } catch(e) {
       console.log('Fetch info:', e);
@@ -682,7 +681,6 @@
     btn.disabled = false;
     closeModal();
     try { await loadData(); } catch(e) {}
-    // Show RDV confirmation popup always
     currentLead = savedLead;
     document.getElementById('confirm-email').textContent = savedLead['Email'] || '—';
     document.getElementById('confirm-overlay').classList.add('open');
@@ -706,8 +704,7 @@
           telephone: currentLead['Téléphone'],
           type_projet: currentLead['Type de projet'],
           id_lead: currentLead['ID Lead']
-        }),
-        mode: 'no-cors'
+        })
       });
     } catch(e) {
       console.log('Envoi lien RDV:', e);
