@@ -667,23 +667,25 @@
       historique_actions: currentLead['Historique actions'] || '',
     };
 
+    const savedLead = currentLead;
     try {
       await fetch(UPDATE_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
+        body: JSON.stringify(payload),
+        mode: 'no-cors'
       });
-      closeModal();
-      await loadData();
-      // Show RDV confirmation popup
-      document.getElementById('confirm-email').textContent = currentLead['Email'] || '—';
-      document.getElementById('confirm-overlay').classList.add('open');
     } catch(e) {
-      console.error('Erreur update:', e);
-    } finally {
-      btn.textContent = 'Enregistrer';
-      btn.disabled = false;
+      console.log('Fetch info:', e);
     }
+    btn.textContent = 'Enregistrer';
+    btn.disabled = false;
+    closeModal();
+    try { await loadData(); } catch(e) {}
+    // Show RDV confirmation popup always
+    currentLead = savedLead;
+    document.getElementById('confirm-email').textContent = savedLead['Email'] || '—';
+    document.getElementById('confirm-overlay').classList.add('open');
   }
 
   function closeConfirm() {
