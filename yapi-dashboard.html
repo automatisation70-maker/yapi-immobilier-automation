@@ -376,7 +376,8 @@
     if (btn) btn.classList.add('spinning');
     try {
       const res = await fetch(API_URL);
-      const data = await res.json();
+      const raw = await res.json();
+      const data = Array.isArray(raw) ? raw[0] : raw;
       allLeads = data.leads || [];
       allRDV = data.rdv || [];
       renderStats(data.stats || {});
