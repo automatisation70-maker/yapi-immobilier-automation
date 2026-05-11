@@ -706,12 +706,13 @@
           telephone: currentLead['Téléphone'],
           type_projet: currentLead['Type de projet'],
           id_lead: currentLead['ID Lead']
-        })
+        }),
+        mode: 'no-cors'
       });
-      closeConfirm();
     } catch(e) {
-      console.error('Erreur envoi lien RDV:', e);
+      console.log('Envoi lien RDV:', e);
     } finally {
+      closeConfirm();
       btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg> Envoyer le lien`;
       btn.disabled = false;
     }
